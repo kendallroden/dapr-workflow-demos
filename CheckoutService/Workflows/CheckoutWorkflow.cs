@@ -54,7 +54,7 @@ namespace CheckoutServiceWorkflowSample.Workflows
                 }
             }
         
-            var paymentRequest = new PaymentRequest(order.failCheckout, RequestId: orderId, order.Name, order.Email, inventoryResult.TotalCost);
+            var paymentRequest = new PaymentRequest(order.FailCheckout, RequestId: orderId, order.Name, order.Email, inventoryResult.TotalCost);
             // Process payment for the order 
             try {
                 
