@@ -7,6 +7,5 @@
 	public record StripePayment(string CustomerId,string ReceiptEmail,string Description,string Currency,long Amount,string PaymentId);
 	public record AddStripePayment(string CustomerId,string ReceiptEmail,string Description,string Currency,long Amount);
 
-	public record OrderPayload(bool failPayment, string OrderId, string Name, string Email, double TotalCost);
-    public record OrderItem(string Name, int Quantity);
+  	public record PaymentRequest(bool failCheckout, string RequestId, string Name, string Email, double TotalCost);
 }

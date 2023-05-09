@@ -17,12 +17,12 @@ namespace PaymentService.Controllers
         }
 
         [HttpPost("payment")]
-        public async Task<ActionResult<StripePayment>> Payment([FromBody] OrderPayload order,
+        public async Task<ActionResult<StripePayment>> Payment([FromBody] PaymentRequest order,
             CancellationToken ct)
         {
             string cardToUse = succeedCard;
            
-           if(order.failPayment)
+           if(order.failCheckout)
            {
              cardToUse = failCard;
            }

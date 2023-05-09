@@ -25,10 +25,11 @@ Content-Type: application/json
 
 {
     "input" : {
-        "Name" : "Harry",
-        "Email" : "harry@outlook.com",
+        "FailPayment": true,
+        "Name" : "Kendall",
+        "Email" : "Kendall@outlook.com",
         "OrderItem": {
-        "Name": "Cars", 
+        "Name": "Paperclips", 
         "Quantity": 45
         }
     }

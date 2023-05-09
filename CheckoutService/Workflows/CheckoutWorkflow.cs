@@ -54,6 +54,7 @@ namespace CheckoutServiceWorkflowSample.Workflows
                 }
             }
         
+            var paymentRequest = new PaymentRequest(order.failCheckout, RequestId: orderId, order.Name, order.Email, inventoryResult.TotalCost);
             // Process payment for the order 
             try {
                 
@@ -61,7 +62,7 @@ namespace CheckoutServiceWorkflowSample.Workflows
                 
                 var paymentResponse = await context.CallActivityAsync<PaymentResponse>(
                     nameof(ProcessPaymentActivity),
-                    new PaymentRequest(false, RequestId: orderId, inventoryResult)); 
+                    paymentRequest);
                 
                 if(!paymentResponse.Success)
                 {
@@ -108,9 +109,9 @@ namespace CheckoutServiceWorkflowSample.Workflows
                     
                     context.SetCustomStatus("Issuing refund due to insufficient inventory to fulfill");
 
-                    await context.CallActivityAsync(
-                        nameof(RefundPaymentActivity),
-                        new PaymentRequest(false, RequestId: orderId, inventoryResult));
+                    await context.CallActivityAsync<PaymentResponse>(
+                    nameof(ProcessPaymentActivity),
+                    paymentRequest);  
                     
                     context.SetCustomStatus("Payment refunded");
 

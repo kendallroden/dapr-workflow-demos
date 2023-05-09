@@ -17,7 +17,7 @@ namespace CheckoutServiceWorkflowSample.Activities
             _logger.LogInformation(
                 "Refunding payment: {RequestId} for ${totalCost}",
                 req.RequestId,
-                req.purchaseRequest.TotalCost);
+                req.TotalCost);
 
             // Simulate slow processing
             await Task.Delay(TimeSpan.FromSeconds(2));
