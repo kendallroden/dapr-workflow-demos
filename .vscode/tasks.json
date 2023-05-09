@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build Checkout Service",
+      "label": "BuildCheckoutService",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -14,7 +14,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Publish Checkout Service",
+      "label": "PublishCheckoutService",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -26,7 +26,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Build Payment Service",
+      "label": "BuildPaymentService",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -38,7 +38,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Publish Payment Service",
+      "label": "PublishPaymentService",
       "command": "dotnet",
       "type": "process",
       "args": [

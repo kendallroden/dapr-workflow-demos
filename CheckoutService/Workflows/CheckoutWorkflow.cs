@@ -62,8 +62,6 @@ namespace CheckoutServiceWorkflowSample.Workflows
                 await context.CallActivityAsync(
                     nameof(ProcessPaymentActivity),
                     new PaymentRequest(false, RequestId: orderId, inventoryResult)); 
-                
-             
             }
             catch (Exception ex) {
                 

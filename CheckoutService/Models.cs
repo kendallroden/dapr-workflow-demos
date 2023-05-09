@@ -7,7 +7,7 @@ namespace CheckoutServiceWorkflowSample.Models
     public record InventoryResult(bool Available, InventoryItem? productItem, double TotalCost);
 
     public record PaymentRequest(bool failCheckout, string RequestId, InventoryResult purchaseRequest);
-    public record PaymentResponse(string test, string test2);
+    public record PaymentResponse(bool Success); 
 
     public record CheckoutResult(bool Processed);
 }

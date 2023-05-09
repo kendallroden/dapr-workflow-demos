@@ -8,7 +8,7 @@
 GET http://localhost:{{app_port}}/inventory
 
 ### Restock inventory
-POST http://localhost:{{app_port}}/restock
+POST http://localhost:{{app_port}}/inventory/restock
 
 ### Clear inventory
 DELETE http://localhost:{{app_port}}/inventory
@@ -20,15 +20,15 @@ DELETE http://localhost:{{app_port}}/inventory
 @workflow_id={{$guid}}
 
 // @name wfrequest
-POST http://localhost:{{dapr-http-port}}/v1.0-alpha1/workflows/dapr/CheckoutProcessingWorkflow/{{workflow_id}}/start
+POST http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutWorkflow/{{workflow_id}}/start
 Content-Type: application/json
 
 {
     "input" : {
-        "Name" : "Kendall Roden",
-        "Email" : "kendallroden@outlook.com",
+        "Name" : "Harry",
+        "Email" : "harry@outlook.com",
         "OrderItem": {
-        "Name": "Computers", 
+        "Name": "Cars", 
         "Quantity": 20
         }
     }
@@ -37,4 +37,4 @@ Content-Type: application/json
 ### Get status
 @workflow_id_response={{wfrequest.response.body.instance_id}}
 
-GET http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutProcessingWorkflow/{{workflow_id_response}}
+GET http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutWorkflow/{{workflow_id_response}}
