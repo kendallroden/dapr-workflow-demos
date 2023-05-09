@@ -21,16 +21,22 @@ namespace CheckoutServiceWorkflowSample.Activities
             var invokeClient = DaprClient.CreateInvokeHttpClient(); 
             invokeClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             
-            var response = await invokeClient.PostAsJsonAsync("http://payment/api/Stripe/payment", req);
+            try {
+                
+                var response = await invokeClient.PostAsJsonAsync("http://payment/api/Stripe/payment", req);
 
-            if(response.IsSuccessStatusCode)
-            {
-                return new PaymentResponse(true);
+                if(response.IsSuccessStatusCode) {
+                    return new PaymentResponse(true);
+                }
+                else {
+                    return new PaymentResponse(false);
+                }
+
             }
-            else
-            {
-                return new PaymentResponse(false);
+            catch (Exception ex) {
+                throw ex;
             }
+
         }
     }
 }

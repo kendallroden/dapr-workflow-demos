@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using PaymentService.Contracts;
 using PaymentService.Models.Stripe;
 
@@ -17,7 +18,7 @@ namespace PaymentService.Controllers
         }
 
         [HttpPost("payment")]
-        public async Task<ActionResult<StripePayment>> Payment([FromBody] PaymentRequest order,
+        public async Task<IActionResult> Payment([FromBody] PaymentRequest order,
             CancellationToken ct)
         {
             string cardToUse = succeedCard;
@@ -43,9 +44,18 @@ namespace PaymentService.Controllers
                 Currency: "USD",
                 Amount: ((long)order.TotalCost)
             );
+    
+            try {
+                var response = await _stripeService.AddStripePaymentAsync(payment, ct);
 
-            // Charge customer for requested amount 
-            return await _stripeService.AddStripePaymentAsync(payment, ct); 
+                return new OkObjectResult(new StringContent(JsonSerializer.Serialize(response)));
+     
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new StringContent(JsonSerializer.Serialize(ex.Message)));
+            }      
+           
         }
    
     }

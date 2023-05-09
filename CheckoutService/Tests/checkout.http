@@ -20,17 +20,18 @@ DELETE http://localhost:{{app_port}}/inventory
 @workflow_id={{$guid}}
 
 // @name wfrequest
+
 POST http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutWorkflow/{{workflow_id}}/start
 Content-Type: application/json
 
 {
     "input" : {
         "FailCheckout": true,
-        "Name" : "Kendall",
-        "Email" : "Kendall@outlook.com",
+        "Name" : "Hodor",
+        "Email" : "Hodor@outlook.com",
         "OrderItem": {
         "Name": "Cars", 
-        "Quantity": 10
+        "Quantity": 99
         }
     }
 }
