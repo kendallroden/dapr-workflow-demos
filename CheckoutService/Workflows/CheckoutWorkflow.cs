@@ -59,9 +59,22 @@ namespace CheckoutServiceWorkflowSample.Workflows
                 
                 context.SetCustomStatus("Payment processing");
                 
-                await context.CallActivityAsync(
+                var paymentResponse = await context.CallActivityAsync<PaymentResponse>(
                     nameof(ProcessPaymentActivity),
                     new PaymentRequest(false, RequestId: orderId, inventoryResult)); 
+                
+                if(!paymentResponse.Success)
+                {
+                    // End the workflow here since we were unable to process payment 
+                    await context.CallActivityAsync(
+                        nameof(NotifyActivity),
+                        new Notification($"{orderId} cancelled: Payment processing failed"));
+                    
+                    context.SetCustomStatus("Payment failed");
+                    
+                    return new CheckoutResult(Processed: false);
+
+                }
                 
             }
             catch (Exception ex) {
