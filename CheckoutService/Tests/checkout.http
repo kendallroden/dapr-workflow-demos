@@ -25,12 +25,12 @@ Content-Type: application/json
 
 {
     "input" : {
-        "FailPayment": true,
+        "FailCheckout": true,
         "Name" : "Kendall",
         "Email" : "Kendall@outlook.com",
         "OrderItem": {
-        "Name": "Paperclips", 
-        "Quantity": 45
+        "Name": "Cars", 
+        "Quantity": 10
         }
     }
 }
