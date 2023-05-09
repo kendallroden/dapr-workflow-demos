@@ -4,7 +4,7 @@ using CheckoutServiceWorkflowSample.Models;
 
 namespace CheckoutServiceWorkflowSample.Activities
 {
-    public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, PaymentResponse>
+    public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object?>
     {
 
         readonly ILogger _logger;
@@ -15,22 +15,13 @@ namespace CheckoutServiceWorkflowSample.Activities
         }
         
 
-        public override async Task<PaymentResponse> RunAsync(WorkflowActivityContext context, PaymentRequest req)
+        public override async Task<object?> RunAsync(WorkflowActivityContext context, PaymentRequest req)
         {    
             // Use Dapr svc-to-svc to invoke Payment microservice 
             var invokeClient = DaprClient.CreateInvokeHttpClient(); 
             invokeClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             
-            var result = await invokeClient.PostAsJsonAsync("http://payment/api/Stripe/payment", req);
-
-            if(result.IsSuccessStatusCode)
-            {
-                return new PaymentResponse(true);
-            }
-            else 
-            {
-                return new PaymentResponse(false); 
-            }
+            return await invokeClient.PostAsJsonAsync("http://payment/api/Stripe/payment", req);
         }
     }
 }

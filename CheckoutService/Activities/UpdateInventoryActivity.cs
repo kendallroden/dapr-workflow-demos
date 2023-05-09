@@ -38,7 +38,7 @@ namespace CheckoutServiceWorkflowSample.Activities
                 new InventoryItem(ProductId: product.ProductId, Name: req.OrderItem.Name, PerItemCost: product.PerItemCost, Quantity: newQuantity));
 
 
-            _logger.LogInformation("Stock update: {quantity} {name} left in stock", product.Quantity, product.Name);
+            _logger.LogInformation("Stock update: {quantity} {name} left in stock", newQuantity, product.Name);
 
             return null; 
         }
