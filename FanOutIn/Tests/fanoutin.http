@@ -1,0 +1,35 @@
+@app_url=http://localhost:5000
+
+
+### Run workflow
+@dapr_url=http://localhost:3500 
+@workflow_id={{$guid}}
+@workflow_id_manual=8a004c05-e755-42ee-8a42-cf9bb37659b5
+
+// @name wfrequest
+POST {{dapr_url}}/v1.0-alpha1/workflows/dapr/FanOutInWorkflow/{{workflow_id_manual}}/start
+Content-Type: application/json
+
+{
+    "input" : {
+    "Greetings": [
+            {
+                "CityName": "New York",
+                "Message": "Yo"
+            },
+            {
+                "CityName": "Texas",
+                "Message": "Howdy"
+            },
+            {
+                "CityName": "Vancouver",
+                "Message": "We're here"
+            }
+        ]
+    }
+}
+
+### Get status
+@workflow_id_response={{wfrequest.response.body.instance_id}}
+@workflow_id_manual=8a004c05-e755-42ee-8a42-cf9bb37659b5
+GET {{dapr_url}}/v1.0-alpha1/workflows/dapr/FanOutInWorkflow/{{workflow_id_manual}}

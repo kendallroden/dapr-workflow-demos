@@ -1,55 +1,79 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Retail/RetailWorkflowSample.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/Retail/RetailWorkflowSample.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "--project",
-                "${workspaceFolder}/Retail/RetailWorkflowSample.csproj"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "appId": "order-processor",
-            "appPort": 5064,
-            "httpPort": 3500,
-            "grpcPort": 50000,
-            "label": "dapr-debug",
-            "type": "dapr",
-            "dependsOn": "build"
-        },
-        {
-            "appId": "order-processor",
-            "label": "daprd-down",
-            "type": "daprd-down"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build OrderService",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/OrderService/OrderServiceWorkflowSample.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish OrderService",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "publish",
+        "${workspaceFolder}/OrderService/OrderServiceWorkflowSample.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build PaymentService",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/PaymentService/PaymentService.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish OrderService",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "publish",
+        "${workspaceFolder}PaymentService/PaymentService.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "watch",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "watch",
+        "run",
+        "--project",
+        "${workspaceFolder}/OrderService/OrderServiceWorkflowSample.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "appId": "order-processor",
+      "appPort": 5064,
+      "httpPort": 3500,
+      "grpcPort": 50000,
+      "label": "dapr-debug",
+      "type": "dapr",
+      "dependsOn": "build"
+    },
+    {
+      "appId": "order-processor",
+      "label": "daprd-down",
+      "type": "daprd-down"
+    }
+  ]
 }

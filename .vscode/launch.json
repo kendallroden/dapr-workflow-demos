@@ -1,53 +1,90 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": ".NET Core Launch (web)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Retail/bin/Debug/net7.0/RetailWorkflowSample.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Retail",
-            "stopAtEntry": false,
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            }
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
-        },
-        {
-            "name": ".NET Core Launch (web) with Dapr",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "dapr-debug",
-            "program": "${workspaceFolder}/Retail/bin/Debug/net7.0/RetailWorkflowSample.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Retail",
-            "stopAtEntry": false,
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "DAPR_HTTP_PORT": "3500",
-                "DAPR_GRPC_PORT": "50000"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            },
-            "postDebugTask": "daprd-down"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "OrderService Example Debug",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build OrderService",
+      "program": "${workspaceFolder}/OrderService/bin/Debug/net7.0/OrderServiceWorkflowSample.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/OrderService",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      }
+    },
+    {
+      "name": "PaymentService Example Debug",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build PaymentService",
+      "program": "${workspaceFolder}/PaymentService/bin/Debug/net6.0/PaymentService.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/PaymentService",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    {
+      "name": "Fan Out/In Example",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/FanOutIn/bin/Debug/net7.0/FanOutInWorkflowSample.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/FanOutIn",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      }
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    },
+    {
+      "name": ".NET Core Launch (web) with Dapr",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "dapr-debug",
+      "program": "${workspaceFolder}/OrderService/bin/Debug/net7.0/OrderServiceWorkflowSample.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/OrderService",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DAPR_HTTP_PORT": "3500",
+        "DAPR_GRPC_PORT": "50000"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      },
+      "postDebugTask": "daprd-down"
+    }
+  ]
 }

@@ -8,7 +8,7 @@ Demos applications that use the Dapr Workflow building block.
 2. [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 3. A REST client, such as [cURL](https://curl.se/), or the VSCode [REST client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
 
-    > The VSCode REST client is configured as a recommended extension when opening this repo in VSCode.
+   > The VSCode REST client is configured as a recommended extension when opening this repo in VSCode.
 
 ## Hello world workflow sample
 
@@ -26,18 +26,18 @@ graph TD
 
 1. Change to the HelloWorld directory and build the ASP.NET app:
 
-    ```bash
-    cd HelloWorld
-    dotnet build
-    ```
+   ```bash
+   cd HelloWorld
+   dotnet build
+   ```
 
 2. Run the app using the Dapr CLI:
 
-    ```bash
-    dapr run --app-id hello-world --app-port 5065 --dapr-http-port 3500 dotnet run
-    ```
+   ```bash
+   dapr run --app-id hello-world --app-port 5065 --dapr-http-port 3500 dotnet run
+   ```
 
-    > Ensure the --app-port is the same as the port specified in the launchSettings.json file.
+   > Ensure the --app-port is the same as the port specified in the launchSettings.json file.
 
 3. Start the `HelloWorldWorkflow` via the Workflow HTTP API using cURL, or use the [helloworld.http](HelloWorld/helloworld.http) file if you're using VSCode with the REST client:
 
@@ -45,46 +45,46 @@ graph TD
    curl -i -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/HelloWorldWorkflow/1234a/start \
      -H "Content-Type: application/json" \
      -d '{ "input" : "Marc"}'
-    ```
+   ```
 
-    > Note that `1234a` in the URL is the workflow instance ID. This can be any string you want.
+   > Note that `1234a` in the URL is the workflow instance ID. This can be any string you want.
 
-    Expected result:
+   Expected result:
 
-    ```json
-    {
-        "instance_id": "<WORKFLOW_ID>"
-    }
-    ```
+   ```json
+   {
+     "instance_id": "<WORKFLOW_ID>"
+   }
+   ```
 
 4. Check the workflow status via Workflow HTTP API:
 
-    ```bash
-    curl -i -X GET http://localhost:3500/v1.0-alpha1/workflows/dapr/HelloWorldWorkflow/1234a/status
-    ```
+   ```bash
+   curl -i -X GET http://localhost:3500/v1.0-alpha1/workflows/dapr/HelloWorldWorkflow/1234a/status
+   ```
 
-    Expected result:
+   Expected result:
 
-    ```json
-    {
-        "WFInfo": {
-            "instance_id": "<WORKFLOW_ID>"
-        },
-        "start_time": "2023-05-01T12:15:45Z",
-        "metadata": {
-            "dapr.workflow.custom_status": "",
-            "dapr.workflow.input": "\"Marc"\",
-            "dapr.workflow.last_updated": "2023-05-01T12:15:45Z",
-            "dapr.workflow.name": "HelloWorldWorkflow",
-            "dapr.workflow.output": "\"Hi Marc"\",
-            "dapr.workflow.runtime_status": "COMPLETED"
-        }
-    }
-    ```
+   ```json
+   {
+       "WFInfo": {
+           "instance_id": "<WORKFLOW_ID>"
+       },
+       "start_time": "2023-05-01T12:15:45Z",
+       "metadata": {
+           "dapr.workflow.custom_status": "",
+           "dapr.workflow.input": "\"Marc"\",
+           "dapr.workflow.last_updated": "2023-05-01T12:15:45Z",
+           "dapr.workflow.name": "HelloWorldWorkflow",
+           "dapr.workflow.output": "\"Hi Marc"\",
+           "dapr.workflow.runtime_status": "COMPLETED"
+       }
+   }
+   ```
 
-## Retail workflow sample
+## OrderService workflow sample
 
-The Retail Workflow sample is a workflow that processes an order. The workflow takes an order payload as input and returns an order result as output. The workflow uses these activities:
+The OrderService Workflow sample is a workflow that processes an order. The workflow takes an order payload as input and returns an order result as output. The workflow uses these activities:
 
 - `NotifyActivity`: Notifies the customer of the progress of the order.
 - `CheckInventoryActivity`: Checks if the inventory is sufficient.
@@ -124,34 +124,34 @@ Next to the workflow, this application has an `InventoryController` with the fol
 
 The `InventoryController` also uses Dapr's state management building block.
 
-### Run the RetailWorkflowSample app
+### Run the OrderServiceWorkflowSample app
 
-1. Change to the Retail directory and build the ASP.NET app:
+1. Change to the OrderService directory and build the ASP.NET app:
 
-    ```bash
-    cd Retail
-    dotnet build
-    ```
+   ```bash
+   cd OrderService
+   dotnet build
+   ```
 
 2. Run the app using the Dapr CLI:
 
-    ```bash
-    dapr run --app-id order-processor --app-port 5064 --dapr-http-port 3500 --resources-path ./Resources dotnet run
-    ```
+   ```bash
+   dapr run --app-id order-processor --app-port 5064 --dapr-http-port 3500 --resources-path ./Resources dotnet run
+   ```
 
-    > Ensure the --app-port is the same as the port specified in the launchSettings.json file.
+   > Ensure the --app-port is the same as the port specified in the launchSettings.json file.
 
-3. Check the inventory using cURL, or use the [retail.http](Retail/retail.http) file if you're using VSCode with the REST client:
+3. Check the inventory using cURL, or use the [OrderService.http](OrderService/OrderService.http) file if you're using VSCode with the REST client:
 
-    ```bash
-    curl -X POST http://localhost:5064/inventory/restock
-    ```
+   ```bash
+   curl -X POST http://localhost:5064/inventory/restock
+   ```
 
-    If the quantity of the items is not 0, clear the inventory by running:
+   If the quantity of the items is not 0, clear the inventory by running:
 
-    ```bash
-    curl -X POST http://localhost:5064/inventory/clear
-    ```
+   ```bash
+   curl -X POST http://localhost:5064/inventory/clear
+   ```
 
 4. Try ordering 100 paperclips while the inventory is not sufficient. Start the `OrderProcessingWorkflow` via the Workflow HTTP API:
 
@@ -159,103 +159,103 @@ The `InventoryController` also uses Dapr's state management building block.
    curl -i -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/1234a/start \
      -H "Content-Type: application/json" \
      -d '{ "input" : {"Name": "Paperclips", "Quantity": 100}}'
-    ```
+   ```
 
-    > Note that `1234a` in the URL is the workflow instance ID. This can be any string you want.
+   > Note that `1234a` in the URL is the workflow instance ID. This can be any string you want.
 
-    Expected result:
+   Expected result:
 
-    ```json
-    {
-        "instance_id": "<WORKFLOW_ID>"
-    }
-    ```
+   ```json
+   {
+     "instance_id": "<WORKFLOW_ID>"
+   }
+   ```
 
-    > Pay attention to the console output. A message will appear that indicates the inventory is insufficient.
+   > Pay attention to the console output. A message will appear that indicates the inventory is insufficient.
 
 5. Check the workflow status via Workflow HTTP API:
 
-    ```bash
-    curl -i -X GET http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/1234a/status
-    ```
+   ```bash
+   curl -i -X GET http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/1234a/status
+   ```
 
-    Expected result:
+   Expected result:
 
-    ```json
-    {
-        "WFInfo": {
-            "instance_id": "<WORKFLOW_ID>"
-        },
-        "start_time": "2023-05-01T12:15:45Z",
-        "metadata": {
-            "dapr.workflow.custom_status": "\"Stopped order process due to insufficient inventory.\"",
-            "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":100}",
-            "dapr.workflow.last_updated": "2023-05-01T12:15:45Z",
-            "dapr.workflow.name": "OrderProcessingWorkflow",
-            "dapr.workflow.output": "{\"Processed\":false}",
-            "dapr.workflow.runtime_status": "COMPLETED"
-        }
-    }
-    ```
+   ```json
+   {
+     "WFInfo": {
+       "instance_id": "<WORKFLOW_ID>"
+     },
+     "start_time": "2023-05-01T12:15:45Z",
+     "metadata": {
+       "dapr.workflow.custom_status": "\"Stopped order process due to insufficient inventory.\"",
+       "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":100}",
+       "dapr.workflow.last_updated": "2023-05-01T12:15:45Z",
+       "dapr.workflow.name": "OrderProcessingWorkflow",
+       "dapr.workflow.output": "{\"Processed\":false}",
+       "dapr.workflow.runtime_status": "COMPLETED"
+     }
+   }
+   ```
 
-    > Depending on how quick the status is retrieved after starting the workflow, the `dapr.workflow.runtime_status` could still be `"RUNNING"`. Repeat the GET status request until the status is `"COMPLETED"`.
+   > Depending on how quick the status is retrieved after starting the workflow, the `dapr.workflow.runtime_status` could still be `"RUNNING"`. Repeat the GET status request until the status is `"COMPLETED"`.
 
 6. Restock the inventory:
 
-    ```bash
-    curl -X POST http://localhost:5064/inventory/restock
-    ```
+   ```bash
+   curl -X POST http://localhost:5064/inventory/restock
+   ```
 
-    Expected result: `HTTP 200 OK`
+   Expected result: `HTTP 200 OK`
 
 7. Try ordering paperclips again, now within the limits of the inventory. Start the `OrderProcessingWorkflow` via the Workflow HTTP API:
 
-    ```bash
-    curl -i -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/1234b/start \
-     -H "Content-Type: application/json" \
-     -d '{ "input" : {"Name": "Paperclips", "Quantity": 100}}'
-    ```
+   ```bash
+   curl -i -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/1234b/start \
+    -H "Content-Type: application/json" \
+    -d '{ "input" : {"Name": "Paperclips", "Quantity": 100}}'
+   ```
 
-    > Note that `1234b` in the URL is the workflow instance ID. This can be any string you want.
+   > Note that `1234b` in the URL is the workflow instance ID. This can be any string you want.
 
-    Expected result:
+   Expected result:
 
-    ```json
-    {
-        "instance_id": "<WORKFLOW_ID>"
-    }
-    ```
+   ```json
+   {
+     "instance_id": "<WORKFLOW_ID>"
+   }
+   ```
 
-    > Pay attention to the console output. Messages will appear that indicate the inventory is sufficient and payment has been processed successfully.
+   > Pay attention to the console output. Messages will appear that indicate the inventory is sufficient and payment has been processed successfully.
 
 8. Check the workflow status via Workflow HTTP API:
 
-    ```bash
-    curl -i -X GET http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/1234b/status
-    ```
+   ```bash
+   curl -i -X GET http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/1234b/status
+   ```
 
-    Expected result:
+   Expected result:
 
-    ```json
-    {
-        "WFInfo": {
-            "instance_id": "<WORKFLOW_ID>"
-        },
-        "start_time": "2023-05-01T12:22:25Z",
-        "metadata": {
-            "dapr.workflow.custom_status": "",
-            "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":100}",
-            "dapr.workflow.last_updated": "2023-05-01T12:22:37Z",
-            "dapr.workflow.name": "OrderProcessingWorkflow",
-            "dapr.workflow.output": "{\"Processed\":true}",
-            "dapr.workflow.runtime_status": "COMPLETED"
-        }
-    }
-    ```
+   ```json
+   {
+     "WFInfo": {
+       "instance_id": "<WORKFLOW_ID>"
+     },
+     "start_time": "2023-05-01T12:22:25Z",
+     "metadata": {
+       "dapr.workflow.custom_status": "",
+       "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":100}",
+       "dapr.workflow.last_updated": "2023-05-01T12:22:37Z",
+       "dapr.workflow.name": "OrderProcessingWorkflow",
+       "dapr.workflow.output": "{\"Processed\":true}",
+       "dapr.workflow.runtime_status": "COMPLETED"
+     }
+   }
+   ```
 
 9. Inspect the logs in ZipKin: [`localhost:9411/zipkin`](http://localhost:9411/zipkin). Find the entry marked `order-processor:create_orchestration||orderprocessingworkflow` and show the details. You'll now see a timeline of the workflow at the top, and the activities underneath.
 
-    ![Order processor in Zipkin](images/order-processor_zipkin.png)
+   ![Order processor in Zipkin](images/order-processor_zipkin.png)
 
 ## Resources
 
