@@ -2,13 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "OrderService Example Debug",
+      "name": "Checkout",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "build OrderService",
-      "program": "${workspaceFolder}/OrderService/bin/Debug/net7.0/OrderServiceWorkflowSample.dll",
+      "preLaunchTask": "Build Checkout Service",
+      "program": "${workspaceFolder}/CheckoutService/bin/Debug/net7.0/CheckoutServiceWorflowSample.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/OrderService",
+      "cwd": "${workspaceFolder}/Checkout",
       "stopAtEntry": false,
       "serverReadyAction": {
         "action": "openExternally",
@@ -22,10 +22,10 @@
       }
     },
     {
-      "name": "PaymentService Example Debug",
+      "name": "Payment",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "build PaymentService",
+      "preLaunchTask": "Build Payment Service",
       "program": "${workspaceFolder}/PaymentService/bin/Debug/net6.0/PaymentService.dll",
       "args": [],
       "cwd": "${workspaceFolder}/PaymentService",
