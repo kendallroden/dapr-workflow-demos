@@ -18,13 +18,15 @@ namespace CheckoutServiceWorkflowSample.Activities
         public override async Task<object?> RunAsync(WorkflowActivityContext context, PaymentRequest req)
         {
             _logger.LogInformation(
-                "Processing payment: {CheckoutId} for ${totalCost}",
-                req.CheckoutId,
-                req.TotalCost);
+                "Processing payment for order {RequestId} for {Quantity} {Name}",
+                req.RequestId,
+                req.purchaseRequest.productItem.Quantity,
+                req.purchaseRequest.productItem.Name
+                );
             
+            // Use Dapr svc-to-svc to invoke Payment microservice 
             var invokeClient = DaprClient.CreateInvokeHttpClient(); 
             invokeClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
             var result = await invokeClient.PostAsJsonAsync("http://payment/api/Stripe/payment", req);
 
             return result.StatusCode; 

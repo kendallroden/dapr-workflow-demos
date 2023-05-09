@@ -4,7 +4,7 @@ using CheckoutServiceWorkflowSample.Models;
 
 namespace CheckoutServiceWorkflowSample.Activities
 {
-    public class CheckInventoryActivity : WorkflowActivity<InventoryRequest, object?>
+    public class CheckInventoryActivity : WorkflowActivity<CustomerOrder, object?>
     {
         readonly ILogger _logger;
         readonly DaprClient _client;
@@ -16,36 +16,33 @@ namespace CheckoutServiceWorkflowSample.Activities
             _client = client;
         }
 
-        public override async Task<object?> RunAsync(WorkflowActivityContext context, InventoryRequest req)
+        public override async Task<object?> RunAsync(WorkflowActivityContext context, CustomerOrder req)
         {
 
-            // Check inventory state store to get accurate inventory count 
-            InventoryItem item = await _client.GetStateAsync<InventoryItem>(
-                storeName,
-                req.ItemName.ToLowerInvariant());
-            
-            if(item == null)
+            // Check inventory to see how much of the requested product is available in inventory 
+            var product = await _client.GetStateAsync<InventoryItem>(storeName, req.OrderItem.Name.ToLowerInvariant());
+
+            // If the inventory db has not been seeded, return insufficient inventory result 
+            if(product == null)
             {
                 return new InventoryResult(false, null, 0);
             }
             
-            _logger.LogInformation(
-                "Status: Found {quantity} {name} in inventory",
-                item.Quantity,
-                item.Name);
+            _logger.LogInformation("Status: Found {quantity} {name} in inventory", product.Quantity, product.Name);
 
-            var totalCost = req.Quantity * item.PerItemCost; 
+            // Calculate order total 
+            var orderTotal = product.PerItemCost * req.OrderItem.Quantity;
             
             // See if there're enough items to purchase
-            if (item.Quantity >= req.Quantity)
+            if (product.Quantity >= req.OrderItem.Quantity)
             {
                 // Simulate slow processing
                 await Task.Delay(TimeSpan.FromSeconds(2));
                 
-                return new InventoryResult(true, item, totalCost);
+                return new InventoryResult(true, product, orderTotal);
             }
                 
-            return new InventoryResult(false, item, totalCost);
+            return new InventoryResult(false, product, orderTotal);
         }
     }
 }
