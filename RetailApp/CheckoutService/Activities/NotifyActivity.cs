@@ -16,7 +16,6 @@ namespace CheckoutServiceWorkflowSample.Activities
         public override Task<object?> RunAsync(WorkflowActivityContext context, Notification notification)
         {
             _logger.LogInformation(notification.Message);
-
             return Task.FromResult<object?>(null);
         }
     }

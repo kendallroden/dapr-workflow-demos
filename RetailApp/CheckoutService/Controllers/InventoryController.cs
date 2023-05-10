@@ -10,8 +10,8 @@ public class InventoryController : ControllerBase
 {
     private readonly ILogger<InventoryController> _logger;
     private readonly DaprClient _client;
-    private static readonly string storeName = "statestore";
-    private readonly static string[] itemKeys = new [] {"Paperclips", "Cars", "Computers"};
+    private static readonly string storeName = "inventorystate";
+    private readonly static string[] itemKeys = new[] { "Paperclips", "Cars", "Computers" };
 
     public InventoryController(ILogger<InventoryController> logger, DaprClient client)
     {
@@ -26,8 +26,8 @@ public class InventoryController : ControllerBase
 
         foreach (var itemKey in itemKeys)
         {
-             var item = await _client.GetStateAsync<InventoryItem>(storeName, itemKey.ToLowerInvariant());
-             inventory.Add(item);
+            var item = await _client.GetStateAsync<InventoryItem>(storeName, itemKey.ToLowerInvariant());
+            inventory.Add(item);
         }
 
         return new OkObjectResult(inventory);

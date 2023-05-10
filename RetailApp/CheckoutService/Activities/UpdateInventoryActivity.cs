@@ -6,7 +6,7 @@ namespace CheckoutServiceWorkflowSample.Activities
 {
     class UpdateInventoryActivity : WorkflowActivity<CustomerOrder, object?>
     {
-        static readonly string storeName = "statestore";
+        static readonly string storeName = "inventorystate";
         readonly ILogger _logger;
         readonly DaprClient _client;
 
@@ -22,8 +22,8 @@ namespace CheckoutServiceWorkflowSample.Activities
             await Task.Delay(TimeSpan.FromSeconds(5));
 
             // Determine if there are enough Items for purchase
-            var product = await _client.GetStateAsync<InventoryItem>(storeName,req.OrderItem.Name.ToLowerInvariant());
-            
+            var product = await _client.GetStateAsync<InventoryItem>(storeName, req.OrderItem.Name.ToLowerInvariant());
+
             if ((product.Quantity - req.OrderItem.Quantity) < 0)
             {
                 throw new InvalidOperationException("Requested order quantity no longer available in inventory");
@@ -40,7 +40,7 @@ namespace CheckoutServiceWorkflowSample.Activities
 
             _logger.LogInformation("Stock update: {quantity} {name} left in stock", newQuantity, product.Name);
 
-            return null; 
+            return null;
         }
     }
 }

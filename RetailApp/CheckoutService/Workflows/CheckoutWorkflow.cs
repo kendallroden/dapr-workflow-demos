@@ -13,12 +13,14 @@ namespace CheckoutServiceWorkflowSample.Workflows
         {
             string orderId = context.InstanceId;
 
-            // Notify an Checkout has been received
+            // Order Received 
             await context.CallActivityAsync(
                 nameof(NotifyActivity),
                 new Notification($"Received order {orderId} for {order.OrderItem.Quantity} {order.OrderItem.Name}"));
 
-            // Determine if there is enough product inventory to fulfill the order request 
+
+            // Check Product Inventory  
+
             context.SetCustomStatus("Checking product inventory");
 
             var inventoryResult = await context.CallActivityAsync<InventoryResult>(

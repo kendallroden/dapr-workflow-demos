@@ -12,12 +12,10 @@ namespace FanOutInWorkflowSample.Workflows
         {
             string processId = context.InstanceId;
 
-            if (!context.IsReplaying)
-            {
-                await context.CallActivityAsync(
-                    nameof(NotifyActivity),
-                    new Notification($"Received greetings list, processing {processId}.... "));
-            }
+
+            await context.CallActivityAsync(
+                nameof(NotifyActivity),
+                new Notification($"Received greetings list, processing {processId}.... "));
 
             List<Task<string>> tasks = new();
 
@@ -30,12 +28,10 @@ namespace FanOutInWorkflowSample.Workflows
 
             await Task.WhenAll(tasks);
 
-            if (!context.IsReplaying)
-            {
-                await context.CallActivityAsync(
-                    nameof(NotifyActivity),
-                    new Notification($"All greetings processed for {processId}.... "));
-            }
+
+            await context.CallActivityAsync(
+                nameof(NotifyActivity),
+                new Notification($"All greetings processed for {processId}.... "));
 
             var sb = new StringBuilder();
             foreach (var completedParallelActivity in tasks)
