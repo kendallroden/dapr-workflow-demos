@@ -1,4 +1,4 @@
-### Run workflow
+### Run workflow: dapr run --app-id helloworld --app-port 5000 --dapr-http-port 3500 dotnet run 
 @dapr_url=http://localhost:3500
 @workflow_id={{$guid}}
 
@@ -7,8 +7,13 @@ POST {{dapr_url}}/v1.0-alpha1/workflows/dapr/HelloWorldWorkflow/{{workflow_id}}/
 Content-Type: application/json
 
 {
-    "input" : "Marc"
+    "input" : "Kendall"
 }
+
+
+
+
+
 
 ### Get status
 @workflow_id_response={{wfrequest.response.body.instance_id}}
