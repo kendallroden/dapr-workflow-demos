@@ -10,8 +10,8 @@ public class InventoryController : ControllerBase
 {
     private readonly ILogger<InventoryController> _logger;
     private readonly DaprClient _client;
-    private static readonly string storeName = "statestore";
-    private readonly static string[] itemKeys = new[] { "Paperclips", "Cars", "Computers" };
+    private static readonly string storeName = "inventorystore";
+    private readonly static string[] itemKeys = new[] { "OSS Summit", "KubeCon", "DaprCon" };
 
     public InventoryController(ILogger<InventoryController> logger, DaprClient client)
     {
