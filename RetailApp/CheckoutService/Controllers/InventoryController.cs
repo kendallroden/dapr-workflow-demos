@@ -38,9 +38,9 @@ public class InventoryController : ControllerBase
     {
         var baseInventory = new List<InventoryItem>
         {
-            new InventoryItem(ProductId: 0, Name: itemKeys[0], PerItemCost: 5, Quantity: 100),
-            new InventoryItem(ProductId: 1, Name: itemKeys[1], PerItemCost: 15000, Quantity: 100),
-            new InventoryItem(ProductId: 2, Name: itemKeys[2], PerItemCost: 500, Quantity: 100),
+            new InventoryItem(ProductId: 0, Name: itemKeys[0], PerItemCost: 500, Quantity: 100),
+            new InventoryItem(ProductId: 1, Name: itemKeys[1], PerItemCost: 1000, Quantity: 100),
+            new InventoryItem(ProductId: 2, Name: itemKeys[2], PerItemCost: 10, Quantity: 100),
         };
 
         foreach (var item in baseInventory)
