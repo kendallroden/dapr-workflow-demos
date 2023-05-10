@@ -6,7 +6,7 @@ namespace CheckoutServiceWorkflowSample.Activities
 {
     class UpdateInventoryActivity : WorkflowActivity<CustomerOrder, object?>
     {
-        static readonly string storeName = "inventorystate";
+        static readonly string storeName = "statestore";
         readonly ILogger _logger;
         readonly DaprClient _client;
 

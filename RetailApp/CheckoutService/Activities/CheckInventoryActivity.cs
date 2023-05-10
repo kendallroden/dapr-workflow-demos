@@ -8,7 +8,7 @@ namespace CheckoutServiceWorkflowSample.Activities
     {
         readonly ILogger _logger;
         readonly DaprClient _client;
-        static readonly string storeName = "inventorystate";
+        static readonly string storeName = "statestore";
 
         public CheckInventoryActivity(ILoggerFactory loggerFactory, DaprClient client)
         {
