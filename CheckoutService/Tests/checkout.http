@@ -27,10 +27,10 @@ Content-Type: application/json
 {
     "input" : {
         "FailCheckout": true,
-        "Name" : "Hodor",
-        "Email" : "Hodor@outlook.com",
+        "Name" : "Mark",
+        "Email" : "mark@outlook.com",
         "OrderItem": {
-        "Name": "Cars", 
+        "Name": "Paperclips", 
         "Quantity": 99
         }
     }

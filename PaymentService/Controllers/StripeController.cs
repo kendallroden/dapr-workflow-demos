@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using PaymentService.Contracts;
 using PaymentService.Models.Stripe;
@@ -22,42 +23,43 @@ namespace PaymentService.Controllers
             CancellationToken ct)
         {
             string cardToUse = succeedCard;
-           
-           if(order.failCheckout)
-           {
-             cardToUse = failCard;
-           }
-            
+
+            if (order.failCheckout)
+            {
+                cardToUse = failCard;
+            }
+
             var customer = new AddStripeCustomer(
-                Email: order.Email, 
-                Name: order.Name, 
-                CreditCard: new AddStripeCard(order.Name, cardToUse, "2024", "12", "210")); 
-                  
-            
+                Email: order.Email,
+                Name: order.Name,
+                CreditCard: new AddStripeCard(order.Name, cardToUse, "2024", "12", "210"));
+
+
             // Seed a stripe customer with appropriate card details
             var createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
 
             var payment = new AddStripePayment(
                 CustomerId: createdCustomer.CustomerId,
-                ReceiptEmail: order.Email, 
+                ReceiptEmail: order.Email,
                 Description: $"Order payment for customer {order.Name}",
                 Currency: "USD",
                 Amount: ((long)order.TotalCost)
             );
-    
-            try {
+
+            try
+            {
                 var response = await _stripeService.AddStripePaymentAsync(payment, ct);
 
                 return new OkObjectResult(new StringContent(JsonSerializer.Serialize(response)));
-     
+
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new StringContent(JsonSerializer.Serialize(ex.Message)));
-            }      
-           
+                return Problem(ex.Message, null, (int)HttpStatusCode.InternalServerError);
+            }
+
         }
-   
+
     }
 }
 

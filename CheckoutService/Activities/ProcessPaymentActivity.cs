@@ -29,6 +29,8 @@ namespace CheckoutServiceWorkflowSample.Activities
                     return new PaymentResponse(true);
                 }
                 else {
+                    var error = await response.Content.ReadAsStringAsync();
+                    _logger.LogError(error);
                     return new PaymentResponse(false);
                 }
 

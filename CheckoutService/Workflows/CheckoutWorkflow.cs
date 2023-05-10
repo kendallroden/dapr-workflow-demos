@@ -19,84 +19,69 @@ namespace CheckoutServiceWorkflowSample.Workflows
                 new Notification($"Received order {orderId} for {order.OrderItem.Quantity} {order.OrderItem.Name}"));
 
             // Determine if there is enough product inventory to fulfill the order request 
-            var inventoryResult = new InventoryResult(false, null, 0);
-            try {
-            
-                context.SetCustomStatus("Checking product inventory");
+            context.SetCustomStatus("Checking product inventory");
 
-                inventoryResult = await context.CallActivityAsync<InventoryResult>(
-                    nameof(CheckInventoryActivity),
-                    order);
-                
-                if (!inventoryResult.Available)
-                {
-                    // End the workflow here since we don't have sufficient inventory
-                    await context.CallActivityAsync(
-                        nameof(NotifyActivity),
-                        new Notification($"{orderId} cancelled: Insufficient inventory available"));
-                    
-                    context.SetCustomStatus("Insufficient inventory to fulfill order");
-                    
-                    return new CheckoutResult(Processed: false);
-                }
-            }
-            catch (Exception ex)
+            var inventoryResult = await context.CallActivityAsync<InventoryResult>(
+                nameof(CheckInventoryActivity),
+                order);
+
+            if (!inventoryResult.Available)
             {
-                if (ex.InnerException is TaskFailedException)
-                {
-                    await context.CallActivityAsync(
-                        nameof(NotifyActivity),
-                        new Notification($"Checkout for order: {orderId} failed due to {ex.InnerException.Message}"));
-                        
-                    context.SetCustomStatus($"Error processing request: {ex.InnerException.Message}");
-                    
-                    return new CheckoutResult(Processed: false);
-                }
+                // End the workflow here since we don't have sufficient inventory
+                await context.CallActivityAsync(
+                    nameof(NotifyActivity),
+                    new Notification($"{orderId} cancelled: Insufficient inventory available"));
+
+                context.SetCustomStatus("Insufficient inventory to fulfill order");
+
+                return new CheckoutResult(Processed: false);
             }
-        
+
             var paymentRequest = new PaymentRequest(order.FailCheckout, RequestId: orderId, order.Name, order.Email, inventoryResult.TotalCost);
             // Process payment for the order 
-            try {
-                
+            try
+            {
+
                 context.SetCustomStatus("Payment processing");
-                
+
                 var paymentResponse = await context.CallActivityAsync<PaymentResponse>(
                     nameof(ProcessPaymentActivity),
                     paymentRequest);
-                
-                if(!paymentResponse.Success)
+
+                if (!paymentResponse.Success)
                 {
                     // End the workflow here since we were unable to process payment 
                     await context.CallActivityAsync(
                         nameof(NotifyActivity),
                         new Notification($"{orderId} cancelled: Payment processing failed"));
-                    
+
                     context.SetCustomStatus("Payment failed");
-                    
+
                     return new CheckoutResult(Processed: false);
 
                 }
-                
+
             }
-            catch (Exception ex) {
-                
+            catch (Exception ex)
+            {
+
                 if (ex.InnerException is TaskFailedException)
                 {
                     await context.CallActivityAsync(
                         nameof(NotifyActivity),
                         new Notification($"Processing payment for {orderId} failed due to {ex.Message}"));
-                        context.SetCustomStatus("Payment failed to process");
-                        return new CheckoutResult(Processed: false);
+                    context.SetCustomStatus("Payment failed to process");
+                    return new CheckoutResult(Processed: false);
                 }
             }
-            
+
             // Decrement inventory to account for execution of purchase 
             try
             {
                 await context.CallActivityAsync(
                     nameof(UpdateInventoryActivity),
                     order);
-                
+
                 context.SetCustomStatus("Updating inventory as a result of order payment");
             }
             catch (Exception ex)
@@ -106,13 +91,13 @@ namespace CheckoutServiceWorkflowSample.Workflows
                     await context.CallActivityAsync(
                         nameof(NotifyActivity),
                         new Notification($"Checkout for order {orderId} failed! Processing payment refund."));
-                    
+
                     context.SetCustomStatus("Issuing refund due to insufficient inventory to fulfill");
 
                     await context.CallActivityAsync<PaymentResponse>(
                     nameof(ProcessPaymentActivity),
-                    paymentRequest);  
-                    
+                    paymentRequest);
+
                     context.SetCustomStatus("Payment refunded");
 
                     return new CheckoutResult(Processed: false);
@@ -122,7 +107,7 @@ namespace CheckoutServiceWorkflowSample.Workflows
             await context.CallActivityAsync(
                 nameof(NotifyActivity),
                 new Notification($"Checkout for order {orderId} has completed!"));
-            
+
             context.SetCustomStatus("Checkout completed");
 
             return new CheckoutResult(Processed: true);
