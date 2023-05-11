@@ -1,6 +1,33 @@
+### Run workflow
 @app_port=5000
 @dapr_http_port=3500 
 
+@workflow_id={{$guid}}
+
+// @name CheckoutWorflowRequest
+
+POST http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutWorkflow/{{workflow_id}}/start
+Content-Type: application/json
+
+{
+    "input" : {
+        "FailCheckout": true,
+        "Name" : "Kendall",
+        "Email" : "kendall@outlook.com",
+        "OrderItem": {
+        "Name": "KubeCon", 
+        "Quantity": 20
+        }
+    }
+}
+
+### Clear inventory
+DELETE http://localhost:{{app_port}}/inventory
+
+### Get status
+@workflow_id_response={{CheckoutWorflowRequest.response.body.instance_id}}
+
+GET http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutWorkflow/{{workflow_id_response}}
 
 // Product Inventory
 
@@ -10,33 +37,10 @@ GET http://localhost:{{app_port}}/inventory
 ### Restock inventory
 POST http://localhost:{{app_port}}/inventory/restock
 
-### Clear inventory
-DELETE http://localhost:{{app_port}}/inventory
 
 
-// Checkout workflow 
 
-### Run workflow
-@workflow_id={{$guid}}
 
-// @name wfrequest
 
-POST http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutWorkflow/{{workflow_id}}/start
-Content-Type: application/json
-
-{
-    "input" : {
-        "FailCheckout": true,
-        "Name" : "Mark",
-        "Email" : "mark@outlook.com",
-        "OrderItem": {
-        "Name": "Paperclips", 
-        "Quantity": 99
-        }
-    }
-}
-
-### Get status
-@workflow_id_response={{wfrequest.response.body.instance_id}}
-
-GET http://localhost:{{dapr_http_port}}/v1.0-alpha1/workflows/dapr/CheckoutWorkflow/{{workflow_id_response}}
+curl -i -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345/start -H "Content-Type: application/json" \
+     -d '{ "input" : { "FailCheckout": true, "Name" : "Kendall Roden", "Email" : "kendallroden@outlook.com", "OrderItem": { "Name": "OSS Summit", "Quantity": 6}}}'

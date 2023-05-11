@@ -12,9 +12,6 @@ Content-Type: application/json
 
 
 
-
-
-
 ### Get status
 @workflow_id_response={{wfrequest.response.body.instance_id}}
 

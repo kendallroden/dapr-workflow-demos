@@ -60,7 +60,6 @@ namespace CheckoutServiceWorkflowSample.Workflows
                     context.SetCustomStatus("Payment failed");
 
                     return new CheckoutResult(Processed: false);
-
                 }
 
             }
